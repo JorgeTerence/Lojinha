@@ -21,21 +21,7 @@ $order->setPag($pag);
 if (isset($_GET['submit'])) echo $order->insert();
 else if (isset($_GET['delete'])) echo $order->delete();
 else if (isset($_GET['edit'])) echo $order->edit();
+else if (isset($_GET['user_description'])) echo $order->getUsername();
+else if (isset($_GET['product_description'])) echo $order->getDescription();
 else if (isset($_GET['search'])) echo $order->search();
-else if (isset($_GET['list'])) {
-    foreach ($order->listPagto() as $order) {
-        echo "<ul>";
-        foreach ($order as $key => $value) 
-            echo "<li><b>$key</b>: $value</li>";
-        echo "</ul>";
-    };
-}
-else if (isset($_GET['list_vendas'])) {
-    foreach ($order->list() as $order) {
-        echo "<ul>";
-        foreach ($order as $key => $value) 
-            echo "<li><b>$key</b>: $value</li>";
-        echo "</ul>";
-    };
-}
 ?>

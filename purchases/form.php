@@ -5,6 +5,24 @@
     <?php include "../head.php" ?>
     <title>Cadastrar venda</title>
     <script defer>
+        function fillUsername() {
+            $.ajax({
+                method: "GET",
+                url: "control.php",
+                data: $("form").serialize() + "&user_description="
+            })
+            .done((dados) => $("#txt-username").html(dados));
+        }
+
+        function fillDescription() {
+            $.ajax({
+                method: "GET",
+                url: "control.php",
+                data: $("form").serialize() + "&product_description="
+            })
+            .done((dados) => $("#txt-desc").html(dados));
+        }
+
         function pesquisar() {
             $.ajax({
                 method: "GET",
@@ -16,9 +34,11 @@
                     $(`#${key}`).val(val);
 
                 document.getElementById(data.pag == "V" ? "pagVista" : "pagPrazo").checked = true;
+                fillDescription();
+                fillUsername();
             });
-
         }
+
     </script>
 </head>
 
@@ -34,11 +54,13 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="cod">Id do cliente</label>
-                <input class="form-control" type="number" min="0" name="id_user" id="id_user">
+                <input class="form-control" type="number" min="0" name="id_user" id="id_user" onblur="fillUsername()">
+                <span id="txt-username"></span>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="cod_prod">Código do produto</label>
-                <input class="form-control" type="number" min="0" name="cod_prod" id="cod_prod">
+                <input class="form-control" type="number" min="0" name="cod_prod" id="cod_prod" onblur="fillDescription()">
+                <span id="txt-desc"></span>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="qtd">Quantidade</label>

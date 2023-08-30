@@ -90,13 +90,11 @@ class Order
             $comando->bindParam(1, $this->cod);
 
             if ($comando->execute()) {
-                $retorno = "Produto deletado com sucesso";
+                return "Venda deletada com sucesso";
             }
         } catch (PDOException $erro) {
-            $retorno = "Erro ao deletar os dados" . $erro->getMessage();
+            return "Erro ao deletar os dados" . $erro->getMessage();
         }
-
-        return $retorno;
     }
 
     public function search()
@@ -156,6 +154,33 @@ class Order
             $comando = $conn->prepare("SELECT * FROM purchase LEFT JOIN product ON purchase.cod_prod=product.id");
             $comando->execute();
             return $comando->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $erro) {
+            return "Erro ao listar os dados" . $erro->getMessage();
+        }
+    }
+
+    public function getUsername()
+    {
+        include_once '../connection.php';
+
+        try {
+            $comando = $conn->prepare("SELECT * FROM user WHERE id = ?");
+            $comando->bindParam(1, $this->id_user);
+            $comando->execute();
+            return $comando->fetchAll(PDO::FETCH_ASSOC)[0]["name"];
+        } catch (PDOException $erro) {
+            return "Erro ao listar os dados" . $erro->getMessage();
+        }
+    }
+
+    public function getDescription(){
+        include_once '../connection.php';
+
+        try {
+            $comando = $conn->prepare("SELECT * FROM product WHERE id = ?");
+            $comando->bindParam(1, $this->cod_prod);
+            $comando->execute();
+            return $comando->fetchAll(PDO::FETCH_ASSOC)[0]["descri"];
         } catch (PDOException $erro) {
             return "Erro ao listar os dados" . $erro->getMessage();
         }
