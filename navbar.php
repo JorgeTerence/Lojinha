@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/loja/">Navbar</a>
+    <a class="navbar-brand" href="/lojinha-flores/">Luizinha Flores</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -11,10 +11,10 @@
             Produto
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/loja/products/form.php">Cadastrar</a></li>
+            <li><a class="dropdown-item" href="/lojinha-flores/products/form.php">Cadastrar</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/loja/products/list_order.php">Listar - ordem</a></li>
-            <li><a class="dropdown-item" href="/loja/products/list_expire.php">Listar - vencimento</a></li>
+            <li><a class="dropdown-item" href="/lojinha-flores/products/list_order.php">Listar - ordem</a></li>
+            <li><a class="dropdown-item" href="/lojinha-flores/products/list_expire.php">Listar - vencimento</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -22,10 +22,10 @@
             Vendas
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/loja/purchases/form.php">Cadastrar</a></li>
+            <li><a class="dropdown-item" href="/lojinha-flores/purchases/form.php">Cadastrar</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/loja/purchases/list_pagto.php">Listar - pagamento</a></li>
-            <li><a class="dropdown-item" href="/loja/purchases/list_vendas.php">Listar - tudo</a></li>
+            <li><a class="dropdown-item" href="/lojinha-flores/purchases/list_pagto.php">Listar - pagamento</a></li>
+            <li><a class="dropdown-item" href="/lojinha-flores/purchases/list_vendas.php">Listar - tudo</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -33,8 +33,8 @@
             Usuários
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/loja/user/form.php">Cadastrar cliente</a></li>
-            <li><a class="dropdown-item" href="/loja/user/list.php">Listar - usuário</a></li>
+            <li><a class="dropdown-item" href="/lojinha-flores/user/form.php">Cadastrar cliente</a></li>
+            <li><a class="dropdown-item" href="/lojinha-flores/user/list.php">Listar - usuário</a></li>
             </ul>
         </li>
       </ul>

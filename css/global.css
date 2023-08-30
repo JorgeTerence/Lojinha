@@ -1,0 +1,17 @@
+main {
+  padding: 1rem 2rem;
+}
+
+.grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.listing {
+  background-color: hsl(203, 48%, 31%);
+  padding: 1rem;
+  border-radius: 0.7rem;
+  font-family: Segoe UI, sans-serif;
+}

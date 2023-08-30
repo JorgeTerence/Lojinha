@@ -1,34 +1,84 @@
+<?php
+//error_reporting(E_ERROR | E_PARSE);
+include 'classes.php';
+require_once "../dompdf/autoload.inc.php";
+
+use Dompdf\Dompdf;
+
+$order = filter_input(INPUT_GET, "order_by");
+
+if (isset($_GET["search_order_pdf"])) {
+  $dompdf = new Dompdf();
+
+  $data = "<h1>Listagem de Produtos</h1><table><thead></thead><tr><th>id</th><th>descrição</th><th>valor</th><th>validade</th><th>imagem</th></tr></thead><tbody>";
+
+  foreach ((new Produto())->consultarOrder($order == null ? "id" : $order) as $prod) {
+    $data .= "<tr>";
+    foreach ($prod as $key => $value)
+      if ($key != "image") $data .= "<td>$value</td>";
+    $data .= "</tr>";
+  }
+  $data .= "</tbody></table>";
+
+  $dompdf->loadHtml($data);
+  $dompdf->setPaper('A4', 'portrait');
+  $dompdf->render();
+  $dompdf->stream("relatório.pdf", array("Attachment" => false));
+  return;
+}
+?>
+
 <!doctype html>
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  <?php include "../head.php" ?>
+  <title>Listar por ordem</title>
 </head>
 
-<body>
-    <?php include "../navbar.php"; ?>
+<body data-bs-theme="dark">
+  <?php include "../navbar.php"; ?>
 
+  <main>
     <h1>Listar produtos</h1>
-    <form method="GET" action="control.php">
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="order_by" id="rd-order-id"  value="id">
-      <label class="form-check-label" for="flexRadioDefault1">
-        Código
-      </label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="order_by" id="rd-order-descri" checked value="definicao">
-      <label class="form-check-label" for="flexRadioDefault2">
-        Descrição
-      </label>
-    </div>
 
-        <button type="submit" value="submit" name="search_order" class="btn btn-primary">Pesquisar</button>
+    <form action="list_order.php" method="get">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="order_by" id="rd-order_by" value="id" checked>
+        <label class="form-check-label" for="order_by">
+          Código
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="order_by" id="rd-descri" value="descri">
+        <label class="form-check-label" for="order_by2">
+          Descrição
+        </label>
+      </div>
+
+      <button type="submit" value="submit" name="search_order" class="btn btn-primary">Pesquisar</button>
+      <button type="submit" value="submit" name="search_order_pdf" class="btn btn-primary">Gerar PDF</button>
     </form>
+
+    <section class="grid">
+      <?php
+
+
+      foreach ((new Produto())->consultarOrder($order == null ? "id" : $order) as $prod) {
+      ?>
+        <p class="listing">
+          <?php foreach ($prod as $key => $value) { ?>
+            <?php if ($key == "image") { ?>
+              <img src="data:image/jpg;base64,<?php echo base64_encode($value) ?>" alt="" />
+            <?php continue;
+            } ?>
+            <b><?php echo $key ?>:</b> <?php echo $value ?><br>
+          <?php } ?>
+        </p>
+      <?php } ?>
+
+    </section>
+  </main>
 </body>
 
 </html>

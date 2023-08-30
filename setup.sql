@@ -1,18 +1,23 @@
 -- CREATE DATABASE IF NOT EXISTS lojinha;
 -- USE lojinha;
 
-CREATE TABLE produto (
+CREATE TABLE product (
   id INT PRIMARY KEY AUTO_INCREMENT,
   descri VARCHAR(100),
   val FLOAT,
-  expire_date DATE
+  expire_date DATE,
+  image_name VARCHAR(40),
+  image BLOB
 );
 
 CREATE TABLE user (
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(50),
   phone CHAR(11),
-  cpf CHAR(11)
+  cpf CHAR(11),
+  cep CHAR(8),
+  street_number VARCHAR(5),
+  complement VARCHAR(40)
 );
 
 CREATE TABLE purchase (
@@ -23,7 +28,7 @@ CREATE TABLE purchase (
   cod_prod INT,
   id_user INT,
   FOREIGN KEY(id_user) REFERENCES user(id),
-  FOREIGN KEY(cod_prod) REFERENCES produto(id)
+  FOREIGN KEY(cod_prod) REFERENCES product(id)
 );
 
 INSERT INTO user (name, phone, cpf) VALUES 
@@ -33,7 +38,7 @@ INSERT INTO user (name, phone, cpf) VALUES
   ("Victor", "11767676767", "56345265443"), 
   ("Rodrigo", "11090909721", "43235436312");
 
-INSERT INTO produto (descri, val, expire_date) VALUES 
+INSERT INTO product (descri, val, expire_date) VALUES 
   ("adubo", 10, "2024-05-17"),
   ("buquê de rosas", 25, "2023-05-30"),
   ("buquê de tulipas", 22, "2023-05-30"),
@@ -49,10 +54,10 @@ INSERT INTO purchase (qtd, dt, pag, cod_prod, id_user) VALUES
   (4, "2023-05-02", "P", 4, 3),
   (1, "2023-04-26", "P", 5, 4);
 
-SELECT cod, qtd, dt, pag, cod_prod, descri FROM purchase INNER JOIN produto ON purchase.cod_prod=produto.id WHERE pag = "V";
-SELECT cod, qtd, dt, pag, cod_prod, descri FROM purchase INNER JOIN produto ON purchase.cod_prod=produto.id WHERE pag = "P";
+SELECT cod, qtd, dt, pag, cod_prod, descri FROM purchase INNER JOIN product ON purchase.cod_prod=product.id WHERE pag = "V";
+SELECT cod, qtd, dt, pag, cod_prod, descri FROM purchase INNER JOIN product ON purchase.cod_prod=product.id WHERE pag = "P";
 
-SELECT * FROM produto;
-SELECT * FROM produto ORDER BY descri;
+SELECT * FROM product;
+SELECT * FROM product ORDER BY descri;
 
-SELECT * FROM produto WHERE expire_date BETWEEN "2023-04-18" AND "2024-01-20";
+SELECT * FROM product WHERE expire_date BETWEEN "2023-04-18" AND "2024-01-20";

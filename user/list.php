@@ -1,21 +1,59 @@
+<?php
+include 'classe.php';
+require_once "../dompdf/autoload.inc.php";
+
+use Dompdf\Dompdf;
+
+if (isset($_GET["search_pdf"])) {
+    $dompdf = new Dompdf();
+
+    $data = "<h1>Listagem de Usuários</h1><table><thead></thead><tr><th>id</th><th>name</th><th>fone</th><th>cpf</th><th>cep</th><th>número</th><th>complemento</th></tr></thead><tbody>";
+
+    foreach ((new User())->list() as $vend) {
+        $data .= "<tr>";
+        foreach ($vend as $key => $value) $data .= "<td>$value</td>";
+        $data .= "</tr>";
+    }
+    $data .= "</tbody></table>";
+
+    $dompdf->loadHtml($data);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+    $dompdf->stream("relatório.pdf", array("Attachment" => false));
+    return;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php include "../head.php" ?>
     <title>Listar clientes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </head>
 
-<body>
-    <?php include "../navbar.php" ?>
+<body data-bs-theme="dark"></body>
+<?php include "../navbar.php" ?>
 
+<main>
     <h1>Listar clientes</h1>
-    <form method="GET" action="control.php">
-        <button type="submit" value="submit" name="list" class="btn btn-primary">Listar</button>
+
+    <form action="list.php" method="get">
+        <button type="submit" value="submit" name="search_pdf" class="btn btn-primary" style="margin-bottom: 10px;">Gerar PDF</button>
     </form>
+
+    <section class="grid">
+        <?php
+        foreach ((new User())->list() as $user) {
+        ?>
+            <p class="listing">
+                <?php foreach ($user as $key => $value) { ?>
+                    <b><?php echo $key ?>:</b> <?php echo $value ?><br>
+                <?php } ?>
+            </p>
+        <?php } ?>
+    </section>
+</main>
 </body>
 
 </html>

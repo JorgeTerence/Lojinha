@@ -1,20 +1,64 @@
+<?php
+include 'classes.php';
+require_once "../dompdf/autoload.inc.php";
+
+use Dompdf\Dompdf;
+
+if (isset($_GET["search_pdf"])) {
+    $dompdf = new Dompdf();
+
+    $data = "<h1>Listagem de Produtos</h1><table><thead></thead><tr><th>código</th><th>quant</th><th>data</th><th>pag</th><th>códi_prod</th><th>id_user</th><th>id</th><th>desc</th><th>val</th><th>expire</th><th>imagem</th></tr></thead><tbody>";
+
+    foreach ((new Order())->list() as $vend) {
+        $data .= "<tr>";
+        foreach ($vend as $key => $value)
+            if ($key != "image") $data .= "<td>$value</td>";
+        $data .= "</tr>";
+    }
+    $data .= "</tbody></table>";
+
+    $dompdf->loadHtml($data);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+    $dompdf->stream("relatório.pdf", array("Attachment" => false));
+    return;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <?php include "../head.php" ?>
     <title>Listar pagamentos x usuários</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body data-bs-theme="dark">
     <?php include "../navbar.php" ?>
 
-    <h1>Listar pagamentos x usuários</h1>
-    <form method="GET" action="control.php">
-        <button type="submit" value="submit" name="list_vendas" class="btn btn-primary">Listar</button>
+    <main>
+        <h1>Listar vendas</h1>
+
+        <form action="list_pagto.php" method="get">
+            <button type="submit" value="submit" name="search_pdf" class="btn btn-primary" style="margin-bottom: 10px;">Gerar PDF</button>
+        </form>
+
+        <section class="grid">
+            <?php
+            foreach ((new Order())->list() as $order) {
+            ?>
+                <p class="listing">
+                    <?php foreach ($order as $key => $value) { ?>
+                        <?php if ($key == "image") { ?>
+                            <img src="data:image/jpg;base64,<?php echo base64_encode($value) ?>" alt="" />
+                        <?php continue;
+                        } ?>
+                        <b><?php echo $key ?>:</b> <?php echo $value ?><br>
+                    <?php } ?>
+                </p>
+            <?php } ?>
+        </section>
+    </main>
     </form>
 </body>
 
